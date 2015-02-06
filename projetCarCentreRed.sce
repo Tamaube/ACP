@@ -3,6 +3,7 @@ clear all
 
 A=[14,10;12,11;10,9]
 
+// probleme 1 
 [n,p]=size(A)
 
 tabCara=zeros(n,p)
@@ -13,6 +14,9 @@ for i=1:p
     end
 end
 
+//fin pb1
+
+//transpose il y a une fonction pour sa
 tabIndi=zeros(p,n)
 
 for i=1:p
@@ -22,6 +26,8 @@ for i=1:p
 end
 
 x=0
+
+//good boy !!! mais choisi des nom EXPLICITE
 //tableau caractère centré réduit 
 tabCaraCentre=zeros(n,p)
 
@@ -40,9 +46,13 @@ tabVarCarCentre=zeros(p)
 a = zeros(n)
 b = 0
 for j=1:p
+
+	//tu peu eviter a boucle genre a = tabCaraCentre(:,j)
     for i=1:n
         a(i) = tabCaraCentre(i,j)
     end
+	
+	// la variance c'est la norme au carré divisé par n utilise les fonction de scilab!!!!!!
     for i=1:n
         b = a(i)^2 + b
     end
@@ -55,9 +65,11 @@ end
 tabCaraCentreRed=zeros(n,p)
 
 for j=1:p
+	//tu peu eviter a boucle genre a = tabCaraCentre(:,j)
     for i=1:n
         a(i) = tabCaraCentre(i,j)
     end
+	//nom c'est la racine carrée de la variance pas la variance tout cour
     x = a / tabVarCaraCentre(j)
     //x = x * tabVarCaraCentre(j)
     for i=1:n
