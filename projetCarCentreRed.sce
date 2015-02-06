@@ -1,7 +1,8 @@
-mode(0)
 clear all
 
 A=[14,10;12,11;10,9]
+
+disp(A)
 
 // probleme 1 
 [n,p]=size(A)
@@ -47,11 +48,7 @@ a = zeros(n)
 b = 0
 for j=1:p
 
-	//tu peu eviter a boucle genre a = tabCaraCentre(:,j)
-    for i=1:n
-        a(i) = tabCaraCentre(i,j)
-    end
-	
+    a = tabCaraCentre(:,j)
 	// la variance c'est la norme au carré divisé par n utilise les fonction de scilab!!!!!!
     for i=1:n
         b = a(i)^2 + b
@@ -65,10 +62,7 @@ end
 tabCaraCentreRed=zeros(n,p)
 
 for j=1:p
-	//tu peu eviter a boucle genre a = tabCaraCentre(:,j)
-    for i=1:n
-        a(i) = tabCaraCentre(i,j)
-    end
+	a = tabCaraCentre(:,j)
 	//nom c'est la racine carrée de la variance pas la variance tout cour
     x = a / tabVarCaraCentre(j)
     //x = x * tabVarCaraCentre(j)
@@ -78,9 +72,9 @@ for j=1:p
 end
 
 //tableau variance caractère centré
-tabVarCaraCentre
+disp(tabVarCaraCentre)
 //tableau caractère centré réduit 
-tabCaraCentre
+disp(tabCaraCentre)
 //tableau caractère centré réduit 
-tabCaraCentreRed
+disp(tabCaraCentreRed)
 
