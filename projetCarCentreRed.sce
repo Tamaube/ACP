@@ -2,7 +2,7 @@ clear all
 
 A=[14,10;12,11;10,9]
 
-function [tabCaraCentreRed](A)
+function [tabCaraCentreRed] = calculCarCentreRed (A)
     
     disp(A)
     
