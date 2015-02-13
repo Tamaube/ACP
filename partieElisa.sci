@@ -1,4 +1,4 @@
-//renvoie un vecteur avec les valeurs propres
+0//renvoie un vecteur avec les valeurs propres
 // et la base du plan principale
 function [vals, base] = calculValeurVecteurBase (matCorr)
     [B, D] = spec(matCorr)

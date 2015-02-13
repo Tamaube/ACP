@@ -4,18 +4,7 @@ A=[14,10;12,11;10,9]
 
 disp(A)
 
-// probleme 1 
-[n,p]=size(A)
-
-tabCara=zeros(n,p)
-
-for i=1:p
-    for j=1:n
-        tabCara(j,i)=A(j,i)
-    end
-end
-
-//fin pb1
+tabCara=A;
 
 //transpose il y a une fonction pour sa
 tabIndi=zeros(p,n)
@@ -72,9 +61,9 @@ for j=1:p
 end
 
 //tableau variance caractère centré
-disp(tabVarCaraCentre)
+//disp(tabVarCaraCentre)
 //tableau caractère centré réduit 
-disp(tabCaraCentre)
+//disp(tabCaraCentre)
 //tableau caractère centré réduit 
 disp(tabCaraCentreRed)
 
