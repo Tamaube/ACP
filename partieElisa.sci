@@ -16,7 +16,6 @@ function [vals, base] = calculValeurVecteurBase (matCorr)
     for  i = 1:taille
         base (:,i) = B(:,indices(i))
     end
-    base = [base(:,1), base(:,2)];
 endfunction
 
 function afficherCercleCorrelation(listePoints)

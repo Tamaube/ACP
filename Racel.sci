@@ -1,3 +1,5 @@
+X = fscanfMat("donneesONU.txt");
+
 function COR = Correlation(Z) // fonction qui permet d'avoir la matrice de corrélation des caractères centrés réduits et/ou initiaux
                              //La matrice de corrélation des caractère centrés Yj et Ym est aussi la matrice de covariance des caractères centrés réduits Zj, Zm
 	c=size(Z,"c");              //nombre de colonne de la matrice passée en paramètre               
@@ -25,8 +27,7 @@ function Cord = coordonneeCaractere(Z,VPZ,BONZ, composanteI, composanteJ)
     Cord = [];
     nbCol = size(Z,"c");
     for cpt = 1 : nbCol
-      Cord = [Cord,[sqrt(VPZ(composanteI)) * BONZ(cpt,composanteI);
-	  sqrt(VPZ(composanteJ)) * BONZ(cpt,composanteJ)]]; // on calcule les points (corr(C1,Zm),corr(C2,Zm)) afin de les représenter 
+      Cord = [Cord;[sqrt(VPZ(composanteI)) * BONZ(cpt,composanteI),sqrt(VPZ(composanteJ)) * BONZ(cpt,composanteJ)]]; // on calcule les points (corr(C1,Zm),corr(C2,Zm)) afin de les représenter 
     end
 endfunction
 
