@@ -34,6 +34,5 @@ function afficherCercleCorrelation(listePoints)
 	xgrid
 endfunction
 
-afficherCercles()
 
 
