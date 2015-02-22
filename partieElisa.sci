@@ -1,4 +1,4 @@
-//renvoie un vecteur avec les valeurs propres
+0//renvoie un vecteur avec les valeurs propres
 // et la base du plan principale
 function [vals, base] = calculValeurVecteurBase (matCorr)
     [B, D] = spec(matCorr)
@@ -16,17 +16,24 @@ function [vals, base] = calculValeurVecteurBase (matCorr)
     for  i = 1:taille
         base (:,i) = B(:,indices(i))
     end
-    
 endfunction
 
-function afficherCercle(x0, y0, R)
+function afficherCercleCorrelation(listePoints)
+	clear
     theta=0:0.1:2*%pi;
-    x=x0+R*cos(theta);
-    y=y0+R*sin(theta);
-    plot(x,y)
+	//Affichage des cercles
+    plot(1*cos(theta),1*sin(theta))
+	plot(0.5*cos(theta),0.5 *sin(theta))
+	
+	//Affichage des coordonnees
+	taille_listePoints = size(listePoints,"c");
+	for i:taille_listePoints
+		point = listePoints(i)
+		plot(point(1), point(2) ,".k")
+	end
+	xgrid
 endfunction
 
-clear
-afficherCercle(0,0,1)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-//afficherCercle(0,0,0.5)
-xgrid
+afficherCercles()
+
+
