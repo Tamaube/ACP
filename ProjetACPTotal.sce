@@ -184,7 +184,7 @@ function [vals, base] = calculValeurVecteurBase (matCorr)
     end
 endfunction
 
-function afficherCercleCor(listePoints, numFigure)
+function afficherCercleCor(listePoints,titre, numFigure)
     scf(numFigure);
     clf(numFigure);
     theta=0:0.1:2*%pi;
@@ -200,50 +200,80 @@ function afficherCercleCor(listePoints, numFigure)
         xstring(point(1,1), point(1,2),string(i));
 	end
     plot(0.5*cos(theta),0.5 *sin(theta))
+    xtitle(titre);
 	xgrid
 endfunction
 
+function Q2 = QualiteRepresentationIndividu(BON,Z, composanteI, composanteJ)     
+    // fonction permettant de trouver les points pour faire la projection des individus
+    // on cherche Pi = (Zi.u1/norme(Zi);Zi.U2/norme(Zi))
+    nbIndividu = size(Z,"r");
+    nbAxe = size(BON,"c");
+    Q2 = zeros(nbIndividu,2);
+    for i = 1 : nbIndividu
+          scal = ((Z(i,:)')'*(BON(:,composanteI)));
+          norme = norm(Z(i,:));
+          Q2(i,1) = (scal*scal/(norme*norme));
+          scal = ((Z(i,:)')'*(BON(:,composanteJ)));
+          norme = norm(Z(i,:));
+          Q2(i,2) = (scal*scal/(norme*norme));
+    end
+endfunction
 
 function main(pathFileImport, numFigure)
+    nbFigure=3*(numFigure-1)+1;
+    
     M = importFile(pathFileImport);
     mprintf('Tableau de données : ');
     disp(M);
+    mprintf('\n');
     
     n = size(M,"r");
-    mprintf("Nombre d individus: ");
-    disp(n);
+    mprintf("Nombre d individus: %d \n\n", n);
     
     p = size(M,"c");
-    mprintf("Nombre de caractères :");
-    disp(p);
+    mprintf("Nombre de caractères : %d\n\n", p);
+
     
     tabCaracCentreReduit = calculCarCentreRed (M);
     mprintf('Tableau centré réduit :');
     disp(tabCaracCentreReduit);
+    mprintf('\n');
     
     matCor = Correlation(tabCaracCentreReduit);
     mprintf('Matrice de corrélation :');
     disp(matCor);
+    mprintf('\n');
     
     [valspropre, base] = calculValeurVecteurBase (matCor);
+    mprintf('\n');
     
-    [qualite,MaxQualiteI,MaxQualiteJ] = qualiteRepresentation(valspropre);
+    [qualite,meilleurI,meilleurJ] = qualiteRepresentation(valspropre);
     mprintf("Qualité de la représentation : ")
     disp(qualite);
+    mprintf('\n');
     
-    valsPropreRetenu = [valspropre(MaxQualiteI); valspropre(MaxQualiteJ)];
-    basePlan = [base(:,MaxQualiteI), base(:,MaxQualiteJ)];
+    valsPropreRetenu = [valspropre(meilleurI); valspropre(meilleurJ)];
+    basePlan = [base(:,meilleurI), base(:,meilleurJ)];
     mprintf('Valeurs propres retenues: ');
     disp(valsPropreRetenu);
     mprintf('Base du plan:');
     disp(basePlan);
+    mprintf('\n');
     
     C = composante(basePlan, tabCaracCentreReduit);
     mprintf('Composantes principales:');
     disp(C);
+    mprintf('\n');
     
     listePointCaractere = coordonneeCaractere(tabCaracCentreReduit,valsPropreRetenu,basePlan, 1, 2);
-    afficherCercleCor(listePointCaractere, numFigure);
+    afficherCercleCor(listePointCaractere,'Cercle de corélation', nbFigure);
+    mprintf('\n');
+    nbFigure = nbFigure + 1;
     
+    Q2 = QualiteRepresentationIndividu(basePlan,tabCaracCentreReduit, meilleurI, meilleurJ);
+    afficherCercleCor(Q2,'Qualité de la projection', nbFigure);
+    mprintf('\n');
+    nbFigure = nbFigure + 1;
     
 endfunction
