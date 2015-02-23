@@ -58,11 +58,13 @@ function COR = Correlation(Z) // fonction qui permet d'avoir la matrice de corr�
 endfunction
 
 function M = composante(BON, Z)       // fonction permettant de récuperer toutes les composantes de Z
-    M = [];
     nbLigne = size(Z,"r");
     nbCol = size(BON,"c");
+    M = zeros(nbLigne,nbCol);
     for i= 1 : nbLigne
         for j = 1 : nbCol
+            disp(((Z(i,:))');
+            disp(BON(:,j));
             M(i,j)= ((Z(i,:))'*(BON(:,j)));
         end 
     end
@@ -194,7 +196,22 @@ function main(pathFileImport)
     tabCaracCentreReduit = calculCarCentreRed (M);
     mprintf('Tableau centré réduit :');
     disp(tabCaracCentreReduit);
-    MatCor = Correlation(tabCaracCentreReduit);
+    matCor = Correlation(tabCaracCentreReduit);
     mprintf('Matrice de corrélation :');
-    disp(MatCor);
+    disp(matCor);
+    [valspropre, base] = calculValeurVecteurBase (matCor);
+    
+    valsPropreRetenu = [valspropre(1); valspropre(2)];
+    basePlan = [base(:,1), base(:,2)]
+    
+    mprintf('Valeurs propres retenues: ');
+    disp(valsPropreRetenu);
+    mprintf('Base du plan:');
+    disp(basePlan);
+    
+    C = composante(basePlan, tabCaracCentreReduit);
+    mprintf('Composantes principales:');
+    disp(C);
+    
+    
 endfunction
