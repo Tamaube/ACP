@@ -29,32 +29,20 @@ function [Q,MaxQualiteI,MaxQualiteJ] = qualiteRepresentation(VP)         // fonc
 endfunction
 
 //Tracé du nuage en fonction de la matrice
-function tracerNuage(M)
-    moyenne = mean(M,"r");
-    nbIndiv = size(M,"r");
-    nbCarac = size(M,"c");
-    mat_cov = (M*M) / nbIndiv;
-    mat_cor =  Correlation(M);
-    echred = M - ones(ni,1)*moyenne;
-    ecti = diag((1)./sqrt(diag(mat_cov)));
-    echred = echred*ecti;
+function tracerNuage(M, numFigure)
+    scf(numFigure);
+    clf(numFigure);
     
-    [D,U]=bdiag(mat_cor); 
-    [c,k]=sort(diag(D));
-    c=round((c/sum(c,"r"))*100);
-    axes = U(:,k);
-    indiv = echred*axes;
-    
-    e= max(abs(indiv));
-    xset("window",0); xbasc();
-    xset("font",2,3);
-    plotframe([-e,-e,e,e],[2,10,2,10],[%f,%f],["Projection sur le plan","1er Axe","2nd Axe"]);
-    plot2d(indiv(:,1),indiv(:,2),0,"000");
-    cvar = axes([1,2],:);
-    cvar = cvar.*.[1,0];
-    cvar = cvar';
-    plot2d(cvar(:,1),cvar(:,2),5*ones(1,nbCarac),"000");    
-    
+	//Affichage des coordonnees
+	taille_listePoints = size(M,"r");
+	for i=1:taille_listePoints 
+		point = M(i,:);
+		plot(point(1,1), point(1,2) ,'+r','markersize',10)
+        xstring(point(1,1), point(1,2),string(i));
+	end
+
+    xtitle('Nuage de point');
+    xgrid
 endfunction
 
 
@@ -275,5 +263,12 @@ function main(pathFileImport, numFigure)
     afficherCercleCor(Q2,'Qualité de la projection', nbFigure);
     mprintf('\n');
     nbFigure = nbFigure + 1;
+    
+    tracerNuage(C, nbFigure);
+    
+    contribution = contributionIndividu(C, valsPropreRetenu);
+    mprintf("Contributions: ");
+    disp(contribution);
+    mprintf('\n');
     
 endfunction
