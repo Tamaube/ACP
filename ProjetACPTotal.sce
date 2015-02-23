@@ -63,9 +63,9 @@ function M = composante(BON, Z)       // fonction permettant de récuperer toute
     M = zeros(nbLigne,nbCol);
     for i= 1 : nbLigne
         for j = 1 : nbCol
-            disp(((Z(i,:))');
+            disp((Z(i,:)));
             disp(BON(:,j));
-            M(i,j)= ((Z(i,:))'*(BON(:,j)));
+            M(i,j)= (Z(i,:)*(BON(:,j)));
         end 
     end
 endfunction
