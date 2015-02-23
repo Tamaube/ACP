@@ -1,3 +1,6 @@
+normeMinIncertitude = 0.5;
+normeMaxIncertitude = 1;
+
 //LE FICHIER DOIT ETRE IMPERATIVEMENT EN .XLS ET NON .XLSX
 function M = importFile(path)
     M=[];
@@ -208,10 +211,10 @@ function Q2 = QualiteRepresentationIndividu(BON,Z, composanteI, composanteJ)
     end
 endfunction
 
-function main(pathFileImport, numFigure)
+function NouvellesDonnees = ACP(M, numFigure)
     nbFigure=3*(numFigure-1)+1;
     
-    M = importFile(pathFileImport);
+   
     mprintf('Tableau de données : ');
     disp(M);
     mprintf('\n');
@@ -263,12 +266,41 @@ function main(pathFileImport, numFigure)
     afficherCercleCor(Q2,'Qualité de la projection', nbFigure);
     mprintf('\n');
     nbFigure = nbFigure + 1;
-    
-    tracerNuage(C, nbFigure);
+    mprintf("Qualité de représentation des individus: ");
+    disp(Q2);
+    mprintf('\n');
     
     contribution = contributionIndividu(C, valsPropreRetenu);
     mprintf("Contributions: ");
     disp(contribution);
     mprintf('\n');
     
+    tracerNuage(C, nbFigure);
+    
+    MSansIndMalRepr = [];
+    for i = 1 : n
+      normePoint = norm(Q2(i,:));
+      if (normePoint>=normeMinIncertitude & normePoint<=normeMaxIncertitude) then
+          MSansIndMalRepr = [MSansIndMalRepr; M(i,:)]
+      end
+    end
+
+    NouvellesDonnees = [];
+    for j = 1 : p
+       norme = norm(listePointCaractere(j,:));
+       if(norme>=normeMinIncertitude & norme<=normeMaxIncertitude) then // on ne garde que les caractères qui sont aux normes
+           NouvellesDonnees = [NouvellesDonnees,MSansIndMalRepr(:,j)]
+       end
+    end
+    
 endfunction
+
+function main(pathFileImport)
+     M = importFile(pathFileImport);
+    newM = ACP(M, 1);
+    disp(newM,"Nouvelles données")
+    ACP(newM,2);
+endfunction
+
+
+
