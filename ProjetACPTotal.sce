@@ -211,7 +211,8 @@ function main(pathFileImport)
     mprintf('Composantes principales:');
     disp(C);
     
-    
+    listePointCaractere = coordonneeCaractere(tabCaracCentreReduit,valsPropreRetenu,basePlan, C(:,1), C(:,2));
+    afficherCercleCor(listePointCaractere);
     
     
 endfunction
