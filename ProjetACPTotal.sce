@@ -171,18 +171,24 @@ function [vals, base] = calculValeurVecteurBase (matCorr)
 endfunction
 
 function afficherCercleCor(listePoints)
-	clear
+    scf(1);
+    clf(1);
     theta=0:0.1:2*%pi;
 	//Affichage des cercles
     plot(1*cos(theta),1*sin(theta))
-	plot(0.5*cos(theta),0.5 *sin(theta))
+	
 	
 	//Affichage des coordonnees
 	taille_listePoints = size(listePoints,"r");
-	for i=1:taille_listePoints
-		point = listePoints(i)
-		plot(point(1), point(2) ,".k")
+	for i=1:taille_listePoints 
+		point = listePoints(i,:);
+        mprintf("point: ");
+        disp(point);
+        disp(i);
+		plot(point(1,1), point(1,2) ,'+r','markersize',10)
+        xstring(point(1,1), point(1,2),string(i));
 	end
+    plot(0.5*cos(theta),0.5 *sin(theta))
 	xgrid
 endfunction
 
@@ -211,7 +217,8 @@ function main(pathFileImport)
     mprintf('Composantes principales:');
     disp(C);
     
-    listePointCaractere = coordonneeCaractere(tabCaracCentreReduit,valsPropreRetenu,basePlan, C(:,1), C(:,2));
+    listePointCaractere = coordonneeCaractere(tabCaracCentreReduit,valsPropreRetenu,basePlan, 1, 2);
+    disp(listePointCaractere);
     afficherCercleCor(listePointCaractere);
     
     
