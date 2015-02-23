@@ -1,16 +1,5 @@
+function [] = AxePrinc (composantes,lambda)
 
-function [](composantes)
-
-    composantes(:,1) = [sqrt(3)/2; sqrt(3)/2; -sqrt(3)]
-    composantes(:,2) = [sqrt(3)/2; -sqrt(3)/2; 0]
-    disp(composantes)
-    
-    n=3
-    
-    lambda = [3/2;1/2]
-    
-    
-    
     for i=1:2
         normeCarComposante = norm(composantes(:,i)) ^2;
         
@@ -20,4 +9,15 @@ function [](composantes)
     
     end
 
+endfunction
+
+function M = composante(BON, Z)       // fonction permettant de récuperer toutes les composantes de Z
+    M = [];
+    nbLigne = size(Z,"r");
+    nbCol = size(BON,"c");
+    for i= 1 : nbLigne
+        for j = 1 : nbCol
+            M(i,j)= ((Z(i,:)')'*(BON(:,j)));
+        end 
+    end
 endfunction
