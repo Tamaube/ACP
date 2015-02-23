@@ -62,7 +62,7 @@ function [Q,MaxQualiteI,MaxQualiteJ] = qualiteRepresentation(VP)         // fonc
                 maxi = Q(i,j);
             end 
         end
-    end
+    end 
 endfunction
 
 function M = composante(BON, Z)       // fonction permettant de récuperer toutes les composantes de Z

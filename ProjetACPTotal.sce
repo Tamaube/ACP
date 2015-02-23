@@ -8,10 +8,24 @@ function M = importFile(path)
     M(1,:)=[];
 endfunction
 
-//Calcul de la qualité de la représentation(en %) par rapport aux valeurs propres choisies.
-function quality = qualityOfRepresentation( valsPropres, nbCarac)
-    total = sum(valsPropres);
-    quality = total/nbCarac;
+function [Q,MaxQualiteI,MaxQualiteJ] = qualiteRepresentation(VP)         // fonction permettant de récuperer dans une matrice carré toutes les qualités de représentation 
+                                                                        //entre chaque caractrèe. Récupère les index des composantes qui donneront la meilleur 
+                                                                        //représentation
+    n=size(VP,"r");
+    Q=[];
+    MaxQualiteI = 1;
+    MaxQualiteJ = 1;
+    maxi=0;
+    for i=1:n
+        for j=1:n
+            Q(i,j)=(VP(i)+VP(j))*100/n;         // qualité de représentation pour toutes les valeurs propres 
+            if(Q(i,j)>maxi & i~=j) then
+                MaxQualiteI = i;
+                MaxQualiteJ = j;
+                maxi = Q(i,j);
+            end 
+        end
+    end 
 endfunction
 
 //Tracé du nuage en fonction de la matrice
@@ -170,9 +184,9 @@ function [vals, base] = calculValeurVecteurBase (matCorr)
     end
 endfunction
 
-function afficherCercleCor(listePoints)
-    scf(1);
-    clf(1);
+function afficherCercleCor(listePoints, numFigure)
+    scf(numFigure);
+    clf(numFigure);
     theta=0:0.1:2*%pi;
 	//Affichage des cercles
     plot(1*cos(theta),1*sin(theta))
@@ -182,9 +196,6 @@ function afficherCercleCor(listePoints)
 	taille_listePoints = size(listePoints,"r");
 	for i=1:taille_listePoints 
 		point = listePoints(i,:);
-        mprintf("point: ");
-        disp(point);
-        disp(i);
 		plot(point(1,1), point(1,2) ,'+r','markersize',10)
         xstring(point(1,1), point(1,2),string(i));
 	end
@@ -193,21 +204,35 @@ function afficherCercleCor(listePoints)
 endfunction
 
 
-function main(pathFileImport)
+function main(pathFileImport, numFigure)
     M = importFile(pathFileImport);
     mprintf('Tableau de données : ');
-    disp(M)
+    disp(M);
+    
+    n = size(M,"r");
+    mprintf("Nombre d individus: ");
+    disp(n);
+    
+    p = size(M,"c");
+    mprintf("Nombre de caractères :");
+    disp(p);
+    
     tabCaracCentreReduit = calculCarCentreRed (M);
     mprintf('Tableau centré réduit :');
     disp(tabCaracCentreReduit);
+    
     matCor = Correlation(tabCaracCentreReduit);
     mprintf('Matrice de corrélation :');
     disp(matCor);
+    
     [valspropre, base] = calculValeurVecteurBase (matCor);
     
-    valsPropreRetenu = [valspropre(1); valspropre(2)];
-    basePlan = [base(:,1), base(:,2)]
+    [qualite,MaxQualiteI,MaxQualiteJ] = qualiteRepresentation(valspropre);
+    mprintf("Qualité de la représentation : ")
+    disp(qualite);
     
+    valsPropreRetenu = [valspropre(MaxQualiteI); valspropre(MaxQualiteJ)];
+    basePlan = [base(:,MaxQualiteI), base(:,MaxQualiteJ)];
     mprintf('Valeurs propres retenues: ');
     disp(valsPropreRetenu);
     mprintf('Base du plan:');
@@ -218,8 +243,7 @@ function main(pathFileImport)
     disp(C);
     
     listePointCaractere = coordonneeCaractere(tabCaracCentreReduit,valsPropreRetenu,basePlan, 1, 2);
-    disp(listePointCaractere);
-    afficherCercleCor(listePointCaractere);
+    afficherCercleCor(listePointCaractere, numFigure);
     
     
 endfunction
